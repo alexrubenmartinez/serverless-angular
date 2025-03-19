@@ -1,0 +1,13 @@
+# Serverless
+.serverless/
+.webpack/
+
+# Archivos sensibles
+.env
+.env.local
+.env.*.local
+
+# Dependencias y cache
+node_modules/
+package-lock.json
+yarn.lock

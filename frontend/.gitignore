@@ -1,0 +1,19 @@
+# Angular
+dist/
+.angular/
+coverage/
+
+# Dependencias y lock files
+node_modules/
+package-lock.json
+yarn.lock
+
+# Configuración local
+src/environments/environment*.ts
+
+# Archivos temporales y logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+.vscode/
