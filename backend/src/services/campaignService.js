@@ -1,7 +1,6 @@
-// src/services/campaignService.js
 const Campaign = require('../models/campaignModel');
 
-const createCampaignWithMessages = async (userId, name, processDate, processHour, phoneList, messageText) => { // TODO: Revisar si se puede eliminar
+const createCampaign = async (userId, name, processDate, processHour, phoneList, messageText) => { 
   try {
     const campaignId = await Campaign.createCampaign(userId, name, processDate, processHour, phoneList, messageText);
     await Campaign.createMessages(campaignId, phoneList, messageText);
@@ -22,23 +21,6 @@ const listCampaignsBeetweenDates = async (startDate, endDate) => {
   }
 }
 
-class CampaignService {
-  static async createCampaign(campaignData) {
-    const campaignId = await Campaign.create(campaignData);
-    return { id: campaignId, ...campaignData };
-  }
 
-  static async listCampaigns(startDate, endDate) {
-    return await Campaign.list(startDate, endDate);
-  }
 
-  static async getCampaignMessages(campaignId) {
-    return await Campaign.getMessages(campaignId);
-  }
-
-  static async listAllCampaigns() {
-    return await Campaign.listAllCampaigns();
-  }
-}
-
-module.exports = {CampaignService, createCampaignWithMessages,listCampaignsBeetweenDates};
+module.exports = { createCampaign,listCampaignsBeetweenDates};

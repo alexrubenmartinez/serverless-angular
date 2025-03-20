@@ -3,6 +3,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const campaignRoutes = require('./routes/campaignRoutes')
+const messageRoutes = require('./routes/messageRoutes')
 
 const app = express()
 
@@ -14,5 +15,6 @@ app.use(cors())
 
 // Rutas
 app.use('/api/campaigns', campaignRoutes)
+app.use('/api/messages', messageRoutes)
 
 module.exports = app // Exportar la aplicación Express
