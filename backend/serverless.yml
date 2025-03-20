@@ -8,9 +8,32 @@ service: sinapsis
 provider:
   name: aws
   runtime: nodejs20.x
+  stage: dev
+  #environment:
+  #  SERVERLESS_ACCESS_KEY: ${env:SERVERLESS_ACCESS_KEY}
+
+
+plugins:
+  - serverless-offline
+  - serverless-openapi-documentation
+
+custom:
+  documentation:
+    api:
+      info:
+        title: Marketing Campaign API
+        description: API for managing SMS marketing campaigns
+        version: 1.0.0
+      servers:
+        - url: https://api.example.com/dev
+          description: Development server
+        - url: http://localhost:3000
+          description: Local development
 
 functions:
   api:
-    handler: handler.handler
+    handler: src/handler.handler
     events:
-      - httpApi: "*"
+      - http:
+          path: /{proxy+}
+          method: ANY
