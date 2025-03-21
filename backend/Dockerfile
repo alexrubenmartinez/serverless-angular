@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:20
 
 # Instalar Serverless Framework globalmente
 RUN npm install -g serverless

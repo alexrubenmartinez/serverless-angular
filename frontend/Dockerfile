@@ -1,19 +1,27 @@
-FROM node:16
+# 1. Etapa de compilación
+FROM node:20 AS build
 
-# Crear directorio de trabajo
 WORKDIR /app
 
-# Copiar package.json y package-lock.json
-COPY package*.json ./
-
-# Instalar dependencias
+# Copia los archivos y configura dependencias
+COPY package.json package-lock.json ./
 RUN npm install
 
-# Copiar el resto del código
+# Copia el código fuente y compila Angular (usando --configuration production)
 COPY . .
+RUN npm run build --configuration frontend
 
-# Exponer el puerto que usará Angular
-EXPOSE 4200
+# 2. Etapa de producción con Nginx
+FROM nginx:alpine
 
-# Comando para ejecutar Angular
-CMD ["npm", "start"]
+# Copia la configuración de Nginx personalizada
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+WORKDIR /usr/share/nginx/html
+COPY --from=build /app/dist/frontend/ .
+
+# Expone el puerto 80
+EXPOSE 80
+
+# Inicia Nginx
+CMD ["nginx", "-g", "daemon off;"]

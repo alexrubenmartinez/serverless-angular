@@ -1,0 +1,144 @@
+openapi: 3.0.0
+info:
+  title: Sinapsis
+  description: API para enviar mensajes dentro de campañas
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api
+paths:
+  /campaigns:
+    post:
+      summary: Crear nueva campaña
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userId
+                - name
+                - processDate
+                - processHour
+                - phoneList
+                - messageText
+              properties:
+                userId:
+                  type: integer
+                name:
+                  type: string
+                processDate:
+                  type: string
+                  format: date
+                processHour:
+                  type: string
+                phoneList:
+                  type: string
+                messageText:
+                  type: string
+      responses:
+        '201':
+          description: Campaña creada exitosamente
+        '400':
+          description: Faltan campos requeridos
+        '500':
+          description: Error interno del servidor
+    get:
+      summary: Listar todas las campañas
+      responses:
+        '200':
+          description: Lista de campañas
+        '500':
+          description: Error interno del servidor
+  /campaigns/{id}:
+    get:
+      summary: Obtener campaña por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalles de la campaña
+        '500':
+          description: Error interno del servidor
+  /campaigns/dates:
+    get:
+      summary: Listar campañas entre fechas
+      parameters:
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Lista de campañas
+        '400':
+          description: Faltan campos requeridos
+        '500':
+          description: Error interno del servidor
+  /messages:
+    post:
+      summary: Crear múltiples mensajes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - campaignId
+                - phoneList
+                - text
+              properties:
+                campaignId:
+                  type: integer
+                phoneList:
+                  type: string
+                text:
+                  type: string
+      responses:
+        '201':
+          description: Mensajes creados exitosamente
+        '400':
+          description: Faltan campos requeridos
+        '500':
+          description: Error interno del servidor
+  /messages/{campaignId}:
+    get:
+      summary: Listar mensajes por ID de campaña
+      parameters:
+        - name: campaignId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lista de mensajes
+        '500':
+          description: Error interno del servidor
+  /messages/check-status/{campaignId}:
+    put:
+      summary: Verificar y actualizar estado de campaña
+      parameters:
+        - name: campaignId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Estado de campaña actualizado exitosamente
+        '500':
+          description: Error interno del servidor

@@ -3,8 +3,6 @@ services:
     build: ./backend
     ports:
       - "3000:3000"
-    volumes:
-      - ./backend:/app
     environment:
       DB_HOST: mysql
       DB_USER: root
@@ -14,6 +12,8 @@ services:
       - mysql
     networks:
       - fullstack-network
+    env_file:
+      - .env
 
   mysql:
     image: mysql:8.0
@@ -27,15 +27,25 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - fullstack-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-ppassword"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   frontend:
     build: ./frontend
     ports:
-      - "4200:4200"
-    volumes:
-      - ./frontend:/app
+      - "80:80"
+    depends_on:
+      - backend
     networks:
       - fullstack-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 networks:
   fullstack-network:
