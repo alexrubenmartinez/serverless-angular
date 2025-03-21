@@ -17,4 +17,4 @@ app.use(cors())
 app.use('/api/campaigns', campaignRoutes)
 app.use('/api/messages', messageRoutes)
 
-module.exports = app // Exportar la aplicación Express
+module.exports = app 

@@ -14,14 +14,6 @@ services:
       - fullstack-network
     env_file:
       - .env
-    # Para producción, remueve el volumen de backend.
-    # volumes:
-    #   - ./backend:/app
-    #healthcheck:
-    #  test: ["CMD", "curl", "-f", "http://localhost:3000/health"] #Replace /health with your actual health check endpoint.
-    #  interval: 30s
-    #  timeout: 10s
-    #  retries: 3
 
   mysql:
     image: mysql:8.0

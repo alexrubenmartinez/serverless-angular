@@ -1,17 +1,16 @@
 # "org" ensures this Service is used with the correct Serverless Framework Access Key.
 org: alexmartinez
-# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+
 app: sendmessages
-# "service" is the name of this project. This will also be added to your AWS resource names.
+
 service: sinapsis
 
 provider:
   name: aws
   runtime: nodejs20.x
   stage: dev
-  #environment:
-  #  SERVERLESS_ACCESS_KEY: ${env:SERVERLESS_ACCESS_KEY}
-
+  environment:
+    SERVERLESS_ACCESS_KEY: ${env:SERVERLESS_ACCESS_KEY}
 
 plugins:
   - serverless-offline

@@ -1,0 +1,86 @@
+<div
+  class="relative overflow-x-auto shadow-md sm:rounded-lg px-4 md:px-24 w-full"
+>
+  <div class="flex justify-start items-center gap-2 mb-4">
+    <button class="bg-gray-500 text-white px-4 py-2 rounded" (click)="goBack()">
+      <.
+    </button>
+    <h1 class="text-xl font-bold my-2">Mensajes</h1>
+  </div>
+  <div class="flex justify-between items-start">
+    @if(campaignDetail) {
+
+    <div class="py-2">
+      <h1 class="text-2xl font-semibold mb-4 text-gray-800">
+        {{ campaignDetail.name }}
+      </h1>
+      <div class="flex gap-4">
+        <div class="flex flex-col">
+          <label class="text-xs font-medium text-gray-700" for="process-date"
+            >Fecha de Proceso:</label
+          >
+          <p id="process-date" class="p-2 border rounded text-gray-700">
+            {{ campaignDetail.processDate | date : "dd/MM/yyyy" }}
+          </p>
+        </div>
+        <div class="flex flex-col">
+          <label class="text-xs font-medium text-gray-700" for="process-hour"
+            >Hora de Proceso:</label
+          >
+          <p id="process-hour" class="p-2 border rounded text-gray-700">
+            {{ campaignDetail.processHour }}
+          </p>
+        </div>
+
+        <div class="flex flex-col">
+          <label class="text-xs font-medium text-gray-700" for="message-text"
+            >Mensaje:</label
+          >
+          <p id="message-text" class="p-2 border rounded text-gray-700">
+            {{ campaignDetail.messageText }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    } @if (campaignDetail?.processStatus == 2) {
+    <button
+      class="bg-yellow-500 text-white px-4 py-2 rounded"
+      (click)="validateCampaignStatus()"
+    >
+      Validar Status
+    </button>
+    }
+  </div>
+
+  <hr class="border-slate-600 border-t-2 mb-4" />
+  <div
+    class="flex flex-column sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4"
+  >
+    <table
+      class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+    >
+      <thead
+        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+      >
+        <tr>
+          @for (dc of displayedColumns; track dc) {
+          <th scope="col" class="px-6 py-3">{{ dc }}</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (message of messages; track message.id) {
+        <tr
+          class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
+        >
+          <td>{{ message.id }}</td>
+          <td class="p-4">{{ message.phone }}</td>
+          <td class="px-6 py-4">{{ message.text }}</td>
+          <td>{{ getStatusText(message.shippingStatus) }}</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

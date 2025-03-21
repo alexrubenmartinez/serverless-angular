@@ -1,20 +1,14 @@
 openapi: 3.0.0
 info:
-  title: Marketing Campaign API
-  description: API for managing SMS marketing campaigns
+  title: Sinapsis
+  description: API para enviar mensajes dentro de campañas
   version: 1.0.0
 servers:
-  - url: https://api.example.com/dev
-    description: Development server
-  - url: http://localhost:3000
-    description: Local development
+  - url: http://localhost:3000/api
 paths:
   /campaigns:
     post:
-      summary: Create a new campaign
-      description: Create a new SMS marketing campaign
-      tags:
-        - Campaigns
+      summary: Crear nueva campaña
       requestBody:
         required: true
         content:
@@ -22,262 +16,129 @@ paths:
             schema:
               type: object
               required:
+                - userId
                 - name
-                - message
-                - phoneNumbers
-                - scheduledDate
+                - processDate
+                - processHour
+                - phoneList
+                - messageText
               properties:
+                userId:
+                  type: integer
                 name:
                   type: string
-                  description: Name of the campaign
-                message:
+                processDate:
                   type: string
-                  description: Message to be sent to recipients
-                phoneNumbers:
-                  type: array
-                  items:
-                    type: string
-                  description: List of phone numbers to send the message to
-                scheduledDate:
+                  format: date
+                processHour:
                   type: string
-                  format: date-time
-                  description: Date and time to schedule the campaign
+                phoneList:
+                  type: string
+                messageText:
+                  type: string
       responses:
         '201':
-          description: Campaign created successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  name:
-                    type: string
-                  message:
-                    type: string
-                  scheduledDate:
-                    type: string
-                    format: date-time
-                  processStatus:
-                    type: integer
-                    enum: [1, 2, 3]
-                    description: '1: pending, 2: in process, 3: finished'
+          description: Campaña creada exitosamente
         '400':
-          description: Invalid input
+          description: Faltan campos requeridos
         '500':
-          description: Server error
+          description: Error interno del servidor
     get:
-      summary: List campaigns
-      description: Get a list of campaigns with optional date filtering
-      tags:
-        - Campaigns
+      summary: Listar todas las campañas
+      responses:
+        '200':
+          description: Lista de campañas
+        '500':
+          description: Error interno del servidor
+  /campaigns/{id}:
+    get:
+      summary: Obtener campaña por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalles de la campaña
+        '500':
+          description: Error interno del servidor
+  /campaigns/dates:
+    get:
+      summary: Listar campañas entre fechas
       parameters:
         - name: startDate
           in: query
-          description: Start date to filter campaigns
+          required: true
           schema:
             type: string
             format: date
         - name: endDate
           in: query
-          description: End date to filter campaigns
+          required: true
           schema:
             type: string
             format: date
       responses:
         '200':
-          description: List of campaigns
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    name:
-                      type: string
-                    message:
-                      type: string
-                    scheduledDate:
-                      type: string
-                      format: date-time
-                    processStatus:
-                      type: integer
-                      enum: [1, 2, 3]
-                      description: '1: pending, 2: in process, 3: finished'
-                    totalMessages:
-                      type: integer
-                    sentMessages:
-                      type: integer
-                    errorMessages:
-                      type: integer
-  /campaigns/{id}:
-    get:
-      summary: Get campaign details
-      description: Get details of a specific campaign
-      tags:
-        - Campaigns
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: Campaign ID
-      responses:
-        '200':
-          description: Campaign details
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  name:
-                    type: string
-                  message:
-                    type: string
-                  scheduledDate:
-                    type: string
-                    format: date-time
-                  processStatus:
-                    type: integer
-                    enum: [1, 2, 3]
-                    description: '1: pending, 2: in process, 3: finished'
-                  totalMessages:
-                    type: integer
-                  sentMessages:
-                    type: integer
-                  errorMessages:
-                    type: integer
-        '404':
-          description: Campaign not found
-  /campaigns/{id}/process:
-    post:
-      summary: Process a campaign
-      description: Start processing a campaign, sending messages to recipients
-      tags:
-        - Campaigns
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: Campaign ID
-      responses:
-        '200':
-          description: Campaign processing started
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  processStatus:
-                    type: integer
-                    enum: [2]
-                    description: '2: in process'
+          description: Lista de campañas
         '400':
-          description: Campaign already processed
-        '404':
-          description: Campaign not found
-  /campaigns/{id}/messages:
+          description: Faltan campos requeridos
+        '500':
+          description: Error interno del servidor
+  /messages:
+    post:
+      summary: Crear múltiples mensajes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - campaignId
+                - phoneList
+                - text
+              properties:
+                campaignId:
+                  type: integer
+                phoneList:
+                  type: string
+                text:
+                  type: string
+      responses:
+        '201':
+          description: Mensajes creados exitosamente
+        '400':
+          description: Faltan campos requeridos
+        '500':
+          description: Error interno del servidor
+  /messages/{campaignId}:
     get:
-      summary: List campaign messages
-      description: Get a list of messages for a specific campaign
-      tags:
-        - Messages
+      summary: Listar mensajes por ID de campaña
       parameters:
-        - name: id
+        - name: campaignId
           in: path
           required: true
           schema:
             type: integer
-          description: Campaign ID
-        - name: status
-          in: query
-          schema:
-            type: integer
-            enum: [1, 2, 3]
-          description: "Filter by shipping status 1: pending 2: sent 3: error"
       responses:
         '200':
-          description: List of messages
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    campaignId:
-                      type: integer
-                    phoneNumber:
-                      type: string
-                    shippingStatus:
-                      type: integer
-                      enum: [1, 2, 3]
-                      description: '1: pending, 2: sent, 3: error'
-                    sentAt:
-                      type: string
-                      format: date-time
-                    errorMessage:
-                      type: string
-        '404':
-          description: Campaign not found
-components:
-  schemas:
-    Campaign:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        message:
-          type: string
-        scheduledDate:
-          type: string
-          format: date-time
-        processStatus:
-          type: integer
-          enum: [1, 2, 3]
-          description: '1: pending, 2: in process, 3: finished'
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-    Message:
-      type: object
-      properties:
-        id:
-          type: integer
-        campaignId:
-          type: integer
-        phoneNumber:
-          type: string
-        shippingStatus:
-          type: integer
-          enum: [1, 2, 3]
-          description: '1: pending, 2: sent, 3: error'
-        sentAt:
-          type: string
-          format: date-time
-        errorMessage:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
+          description: Lista de mensajes
+        '500':
+          description: Error interno del servidor
+  /messages/check-status/{campaignId}:
+    put:
+      summary: Verificar y actualizar estado de campaña
+      parameters:
+        - name: campaignId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Estado de campaña actualizado exitosamente
+        '500':
+          description: Error interno del servidor

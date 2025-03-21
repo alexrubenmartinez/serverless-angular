@@ -1,0 +1,79 @@
+<button
+  class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+  (click)="openModal()"
+>
+  Crear campaña
+</button>
+
+<dialog
+  #filterModal
+  id="filterModal"
+  class="bg-white p-6 rounded-lg shadow-lg w-96 place-self-center"
+>
+  <h2 class="text-lg font-bold mb-4 text-center">Crear campaña</h2>
+  <hr class="border-gray-200 border-t-2 mb-4" />
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="max-w-sm mx-auto">
+    <div class="mb-5">
+      <label
+        for="name"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-blue-500"
+      >
+        Nombre de la Campaña
+      </label>
+      <input
+        formControlName="name"
+        type="text"
+        id="name"
+        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        required
+      />
+    </div>
+
+    <div class="mb-5">
+      <label
+        for="phoneList"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-blue-500"
+      >
+        Lista de Teléfonos (separados por coma)
+      </label>
+      <textarea
+        formControlName="phoneList"
+        type="text"
+        id="phoneList"
+        placeholder="Ejemplo: 123456789,987654321"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        required
+      ></textarea>
+    </div>
+
+    <div class="mb-5">
+      <label
+        for="messageText"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-blue-500"
+      >
+        Mensaje
+      </label>
+      <textarea
+        formControlName="messageText"
+        id="messageText"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        required
+      ></textarea>
+    </div>
+    <div class="flex justify-between">
+      <button
+        type="submit"
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      >
+        Crear Campaña
+      </button>
+      <button
+        type="button"
+        (click)="closeModal()"
+        class="bg-red-500 text-white px-4 py-2 rounded"
+      >
+        Cancelar
+      </button>
+    </div>
+  </form>
+</dialog>

@@ -17,10 +17,7 @@ yarn-error.log*
 serverless-debug.log
 
 # Configuración de entorno
-.env
-.env.local
-.env.*.local
-*.env
+
 
 # Archivos del sistema
 .DS_Store
