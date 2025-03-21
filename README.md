@@ -33,6 +33,7 @@ Instrucciones detalladas sobre cómo instalar y configurar el proyecto.
     ```bash
     docker-compose up --build
     ```
+3.  Esperar unos minutos hasta que termine la instalación.
 
 
 ## Uso
