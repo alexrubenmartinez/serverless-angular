@@ -37,7 +37,6 @@ Instrucciones detalladas sobre cómo instalar y configurar el proyecto.
 
 ## Uso
 
-Instrucciones sobre cómo usar la aplicación.
 
 1.  Accede a la aplicación en tu navegador: `http://localhost`
 
